@@ -3,7 +3,8 @@
 A small `python` tool to help you modify your PS3 Save Data.
 
 ## Quick Start
-- Install `python`
+- Install `python3`
+  - developed using `3.13.2` but I don't use any fancy features so an older version will probably work
 - Install `window-curses`; only required for Windows; lib is needed for User Interface
    ```bash
    pip3 install window-curses
@@ -24,16 +25,17 @@ A small `python` tool to help you modify your PS3 Save Data.
 
   | Key | Action |
   |----------|----------|
-  | Up/Down Arrow | Menu Navigation / Increment or Decrement Value|
-  | Left Arrow | Navigate to Submenu |
-  | Right Arrow | Return to previous menu |
+  | `Up`/`Down Arrow` | Menu Navigation / Increment or Decrement Value|
+  | `Left Arrow` | Navigate to Submenu |
+  | `Right Arrow` | Return to previous menu |
   | `Q` | Return to previous menu / Exit Application |
   | `Enter` | Accept modified Value |
   | `Ctrl + c` | Abort - Force app to restore files to state at start up |
 
-## Images
+## Various Screen Shots
+
 ### Main Menu
-When you run the app, you'll be shown an `Account` entry and all of your `Heros` listed
+When you run the app, you'll be shown an `Account` entry and all of your `Heros` listed. At the bottom there is a `Savable` item that will allow you to save when an edit is made
 
 ![main menu](https://github.com/asp22/Diablo3ROSPS3Editor/blob/main/images/main_menu.png)
 
@@ -58,7 +60,12 @@ Within the account menu, you can
 ![effect_selection](https://github.com/asp22/Diablo3ROSPS3Editor/blob/main/images/effect_selection_menu.png)
 
 ### Edits Savable
-After making an edit, note that in the Main Menu, the option to Save is now enabled. If you're happy with your edits, press `Left Arrow` or `Return`. Exit the application with `Q`. You can press `Ctrl+c` at any time to discard any changes and exit the applicaiton.
+After making an edit, note that in the Main Menu, the option to Save is now enabled. If you're happy with your edits.
+- naviagte to `Saveable`
+- press `Left Arrow` or `Return`.
+- Exit the application with `Q`.
+
+You can press `Ctrl+c` at any time to discard any changes and exit the applicaiton.
 
 ![main_menu_savable](https://github.com/asp22/Diablo3ROSPS3Editor/blob/main/images/main_menu_savable.png)
 
