@@ -2,6 +2,11 @@
 
 A small `python` tool to help you modify your PS3 Save Data.
 
+## Newest Feature
+- Create Horadric Caches
+  - Under the Hero Inventory Menu there is an option to fill all unused inventory slots with a Horadric Cache (Torment 6)
+  - Level of Cache is set to be the same as the Hero's level
+
 ## Quick Start
 - Install `python3`
   - developed using `3.13.2` but I don't use any fancy features so an older version will probably work
@@ -71,7 +76,7 @@ You can press `Ctrl+c` at any time to discard any changes and exit the applicait
 
 
 ## Limitations
-- No item creation or duplication
+- No item creation or duplication; Except for the Fill Empty Inventory Slots with a Horadric Cache 
 - No hero creation.
 - Paragon Levels: If you edit the paragon level the app will update all Heros and reset allocated paragon points. i.e. you'll have to reallocate in game
 - Sockets. I've not spent time to understand how items with sockets and gems are representing in save game data. If you want to remove a socket affix from an item, I would recommend that you remove the gems in game first and then use the editor to change the socket affix for something else.
