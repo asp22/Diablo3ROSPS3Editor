@@ -23,7 +23,7 @@ class HeroMenuUi:
                 UiState.ui_stack.append(IntegerMenuUi(self.stdscr, 'Level', self.hero_sd_view.get_level, self.hero_sd_view.set_level, [1, 70]))
             else:
                 if self.hero_sd_view.get_game_items_count() > 0:
-                    UiState.ui_stack.append(HeroInventoryUi(self.stdscr, self.hero_sd_view.get_game_items()))
+                    UiState.ui_stack.append(HeroInventoryUi(self.stdscr, self.hero_sd_view, self.hero_sd_view.get_game_items()))
 
         def draw_menu(select_idx):
             self.pad.addstr(0, 0, f'{self.hero_sd_view.get_name()}')
