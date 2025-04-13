@@ -1,6 +1,7 @@
 import py_proto.account
 import py_proto.items
 from pathlib import Path
+import random
 import argparse
 import proto_parsers.proto_message as pm
 import proto_parsers.proto_item as pi
@@ -83,11 +84,18 @@ class ConsumableItemView:
     def set_stack_size(self, v):
         self._game_item.generator.stack_size.obj.unsigned = v
 
+    def get_square_index(self):
+        return self._game_item.square_index.obj.unsigned
+
 class NonConsumableItemView:
     def __init__(self, game_item):
         self._game_item = game_item
         self._gbid_id = game_item.generator.gb_handle.gbid.obj.signed
         self._gbid = GBIDS.find(self._gbid_id)
+
+    @property
+    def gbid_id(self):
+        return self._gbid_id
 
     def is_consumable(self):
         return False
@@ -108,6 +116,9 @@ class NonConsumableItemView:
 
     def get_category(self):
         return self._gbid.category
+
+    def get_square_index(self):
+        return self._game_item.square_index.obj.unsigned
 
     def has_effects(self):
         return len(self._game_item.generator.base_affixes_list) > 0
@@ -225,6 +236,18 @@ class ItemListView:
                 out.append(s)
         return out
 
+    def get_available_inventory_slots(self):
+        idx = set([i*2 for i in range(60)])
+        keys = [272]
+        keys = [k*2 for k in keys]
+        items = self.get_slot_items(keys)
+        for s in items:
+            sq = s.get_square_index()
+            idx.remove(sq)
+
+        return list(idx)
+
+
     def get_hero_equiped(self):
         out = []
         keys = [288, 304, 320, 336, 352, 368, 384, 400, 416, 432, 448, 464, 480]
@@ -298,5 +321,31 @@ class ItemListView:
 
         self._item_list.create_child_repeated_message(1, raw, py_proto.items.SavedItem)
 
-        
 
+    def fill_empty_inventory_with_horadaric_cache(self, level):
+        last_saved_item = self._item_list.saved_item_list[-1]
+        low_id = last_saved_item.id.id_low.obj.unsigned
+
+        available = self.get_available_inventory_slots()
+        for i, av in enumerate(available):
+
+            new_low_id = low_id + 65537*(i+1)
+
+            raw = "0a0d080110b88688f7fbffffffff01200028a00430243800421908eedaddda0f1207080415fdf7950430890238004000800146"
+            raw_bytes = bytes.fromhex(raw)
+            read, t = pm.decode(raw_bytes)
+            pm.expand_buffer_to_message_recursive(t)
+
+            t[0][1].unsigned = new_low_id
+            t[3].unsigned = av
+            t[5][0].unsigned = random.randint(1,0xFFFFFFFF)
+            t[5][5].unsigned = level
+
+            x = [-1369696815, 584615634, -1756039213, 198273236, -2142381611]
+            random_idx = random.randint(0,4)
+            t[5][1][1].signed = x[random_idx]
+            raw = t.encode().hex()
+
+            self._item_list.create_child_repeated_message(1, raw, py_proto.items.SavedItem)
+
+        return len(available)

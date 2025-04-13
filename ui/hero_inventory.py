@@ -4,16 +4,18 @@ from ui.consumable_menu import ConsumableMenuUi
 from ui.non_consumable_menu import NonConsumableMenuUi
 
 class HeroInventoryUi:
-    def __init__ (self, stdscr, game_items_view):
+    def __init__ (self, stdscr, hero_view, game_items_view):
         self.stdscr = stdscr
+        self.hero_view = hero_view
         self.game_items_view = game_items_view
         self.menu_current_idx = 0
         self.consumable_items = self.game_items_view.get_hero_inventory_consumables()
         self.non_consumable_items = self.game_items_view.get_hero_inventory_non_consumables()
         self.equiped = self.game_items_view.get_hero_equiped()
         self.followers = self.game_items_view.get_followers_items()
+        self.available_slots = self.game_items_view.get_available_inventory_slots()
         self.menu_current_idx = 0
-        self.max_menu_current_idx = 3
+        self.max_menu_current_idx = 4
 
         self.pad_height = self.max_menu_current_idx + 1
         self.pad_width = 200
@@ -31,12 +33,19 @@ class HeroInventoryUi:
                 UiState.ui_stack.append(NonConsumableMenuUi(self.stdscr, self.equiped))
             elif self.menu_current_idx == 3 and len(self.followers):
                 UiState.ui_stack.append(NonConsumableMenuUi(self.stdscr, self.followers))
+            elif self.menu_current_idx == 4 and len(self.followers) and len(self.available_slots) > 0:
+                self.game_items_view.fill_empty_inventory_with_horadaric_cache(self.hero_view.get_level())
+                self.available_slots = self.game_items_view.get_available_inventory_slots()
+                self.non_consumable_items = self.game_items_view.get_hero_inventory_non_consumables()
+                UiState.saveable = True
 
         def draw_menu(select_idx):
-            self.pad.addstr(0, 0, f'Inventory Consumables    : {len(self.consumable_items)}', curses.A_REVERSE if select_idx == 0 else curses.A_NORMAL)
-            self.pad.addstr(1, 0, f'Inventory Non Consumables: {len(self.non_consumable_items)}', curses.A_REVERSE if select_idx == 1 else curses.A_NORMAL)
-            self.pad.addstr(2, 0, f'Equiped                  : {len(self.equiped)}', curses.A_REVERSE if select_idx == 2 else curses.A_NORMAL)
-            self.pad.addstr(3, 0, f'Followers                : {len(self.followers)}', curses.A_REVERSE if select_idx == 3 else curses.A_NORMAL)
+            self.pad.addstr(0, 0, f'Inventory Consumables               : {len(self.consumable_items)}', curses.A_REVERSE if select_idx == 0 else curses.A_NORMAL)
+            self.pad.addstr(1, 0, f'Inventory Non Consumables           : {len(self.non_consumable_items)}', curses.A_REVERSE if select_idx == 1 else curses.A_NORMAL)
+            self.pad.addstr(2, 0, f'Equiped                             : {len(self.equiped)}', curses.A_REVERSE if select_idx == 2 else curses.A_NORMAL)
+            self.pad.addstr(3, 0, f'Followers                           : {len(self.followers)}', curses.A_REVERSE if select_idx == 3 else curses.A_NORMAL)
+            self.pad.addstr(4, 0, f'Fill Empty Slots With Horadric Cache: {len(self.available_slots)}', curses.A_REVERSE if select_idx == 4 else curses.A_NORMAL)
+            self.pad.clrtoeol()
 
             menu_page_format(select_idx)
 
