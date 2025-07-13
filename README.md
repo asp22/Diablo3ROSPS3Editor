@@ -23,9 +23,9 @@ A small `python` tool to help you modify your PS3 Save Data.
 - `git clone` or download this project
 - Open `command prompt` and navigate to the clone/downloaded location and run
   ```
-  python3 ./app.py --in_dir <path to your saved PS3 Dir>
+  python3 ./app.py --in-dir <path to your saved PS3 Dir>
   e.g. 
-  python3 ./app.py --in_dir c:\Users\asp22\Desktop\PS3\SAVEDATA\BLES02035-AUTOSAVE
+  python3 ./app.py --in-dir c:\Users\asp22\Desktop\PS3\SAVEDATA\BLES02035-AUTOSAVE
 - Interface
 
   | Key | Action |
